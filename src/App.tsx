@@ -31,7 +31,7 @@ function Bomby(): JSX.Element {
   const [tourneyName, setTourneyName] = useState<string>(initTourneyName);
 
   const { data: playerQuery } = useQuery(
-    `${tourneyName}players`,
+    `${subdomain}${tourneyName}players`,
     async () => {
       const res = await axios.get(
         `https://api.challonge.com/v1/tournaments/${subdomain}-${tourneyName}/participants.json?api_key=${process.env.REACT_APP_CHALLONGE_API_KEY}`
@@ -39,7 +39,7 @@ function Bomby(): JSX.Element {
       return res.data as { participant: Participant }[];
     });
   const { data: matchQuery } = useQuery(
-    `${tourneyName}matches`,
+    `${subdomain}${tourneyName}matches`,
     async () => {
       const res = await axios.get(
         `https://api.challonge.com/v1/tournaments/${subdomain}-${tourneyName}/matches.json?api_key=${process.env.REACT_APP_CHALLONGE_API_KEY}`
@@ -67,11 +67,13 @@ function Bomby(): JSX.Element {
       <pre>
         {activeMatches?.map(m => {
           const { match } = m;
-          const { player1_id, player2_id, round } = match;
+          const { player1_id, player2_id, round, id: matchId, underway_at } = match;
+          const time = (new Date(underway_at ?? '')).toLocaleTimeString();
           const p1 = players.get(player1_id);
           const p2 = players.get(player2_id);
-          return (<div><h3>
+          return (<div key={matchId}><h3>
             Round {round}: {p1?.name} vs {p2?.name}
+            {time}
           </h3></div>
           );
         })}
