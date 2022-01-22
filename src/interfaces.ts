@@ -1,3 +1,12 @@
+export type ChallongerLocalStorage = {
+  tourney: TourneyPath;
+  config: Config;
+}
+
+export interface Config {
+  challongeKey: string | null;
+}
+
 export interface TourneyPath {
   domain: string;
   tourneyName: string;

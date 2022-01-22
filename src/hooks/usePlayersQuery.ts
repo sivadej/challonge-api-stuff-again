@@ -1,21 +1,26 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import axios from 'axios';
-import { TourneyPath, Participant, PlayerMap } from '../interfaces';
+import { Participant, PlayerMap, ChallongerLocalStorage } from '../interfaces';
 
-const getPlayers = async (tourneyPath: TourneyPath) => {
-  const { tourneyName, domain } = tourneyPath;
+const getPlayers = async (settings: ChallongerLocalStorage) => {
+  const { config, tourney } = settings || {};
+  const { domain, tourneyName } = tourney || {};
+  const { challongeKey } = config || {};
   const url =
     `https://api.challonge.com/v1/tournaments/${domain}-${tourneyName}/` +
-    `participants.json?api_key=${process.env.REACT_APP_CHALLONGE_API_KEY}`;
+    `participants.json?api_key=${challongeKey}`;
   const { data } = await axios.get(url);
   return data;
 };
 
-export default function usePlayersQuery(tourneyPath: TourneyPath): UseQueryResult<PlayerMap> {
-  const { tourneyName, domain } = tourneyPath;
+export default function usePlayersQuery(
+  settings: ChallongerLocalStorage
+): UseQueryResult<PlayerMap> {
+  const { tourney } = settings || {};
+  const { domain, tourneyName } = tourney || {};
   const queryRes = useQuery<Participant[]>(
     `${domain}${tourneyName}players`,
-    () => getPlayers(tourneyPath),
+    () => getPlayers(settings),
     {
       refetchOnWindowFocus: false,
     }

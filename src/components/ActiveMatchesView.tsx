@@ -1,23 +1,26 @@
 import React from 'react';
 import useMatchesQuery from '../hooks/useMatchesQuery';
 import usePlayersQuery from '../hooks/usePlayersQuery';
-import { TourneyPath } from '../interfaces';
+import { ChallongerLocalStorage } from '../interfaces';
 import MatchLine from './MatchLine';
 
-export default function ActiveMatchesView(props: {
-  tourneyPath: TourneyPath;
-}): JSX.Element {
-  const { tourneyPath } = props;
-  const { domain, tourneyName } = tourneyPath;
+interface Props {
+  settings: ChallongerLocalStorage;
+}
 
-  const { data: matchesData } = useMatchesQuery(tourneyPath);
-  const { data: playersData } = usePlayersQuery(tourneyPath);
+export default function ActiveMatchesView({ settings }: Props): JSX.Element {
+  const { tourney } = settings || {};
+  const { domain, tourneyName } = tourney || {};
+
+  const { data: matchesData } = useMatchesQuery(settings);
+  const { data: playersData } = usePlayersQuery(settings);
 
   return (
     <>
       <h1>
         matches {domain} {tourneyName}
       </h1>
+      {JSON.stringify(settings, null, 2)}
       {matchesData?.map((m) => {
         const p1data = m.match.player1_id
           ? playersData?.get(m.match.player1_id)
