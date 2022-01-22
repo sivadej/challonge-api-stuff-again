@@ -1,7 +1,17 @@
-export interface Matches {
-  match: Match;
+export interface TourneyPath {
+  domain: string;
+  tourneyName: string;
 }
+
+export interface FormValues {
+  sub: string;
+  tourney: string;
+}
+
 export interface Match {
+  match: MatchInfo;
+}
+export interface MatchInfo {
   attachment_count?: string | null;
   created_at: string;
   group_id?: string | null;
@@ -9,12 +19,12 @@ export interface Match {
   id: number;
   identifier: string;
   location?: string | null;
-  loser_id?: string | null;
-  player1_id?: number | null;
+  loser_id?: number | null;
+  player1_id: number | null;
   player1_is_prereq_match_loser: boolean;
   player1_prereq_match_id?: number | null;
   player1_votes?: string | null;
-  player2_id?: number | null;
+  player2_id: number | null;
   player2_is_prereq_match_loser: boolean;
   player2_prereq_match_id?: number | null;
   player2_votes?: string | null;
@@ -25,14 +35,14 @@ export interface Match {
   tournament_id: number;
   underway_at?: string | null;
   updated_at: string;
-  winner_id?: string | null;
+  winner_id?: number | null;
   prerequisite_match_ids_csv: string;
   scores_csv: string;
 }
-export interface Participants {
-  participant: Participant;
-}
 export interface Participant {
+  participant: ParticipantInfo;
+}
+export interface ParticipantInfo {
   active: boolean;
   checked_in_at?: string | null;
   created_at: string;
@@ -62,3 +72,4 @@ export interface Participant {
   checked_in: boolean;
   reactivatable: boolean;
 }
+export type PlayerMap = Map<number, ParticipantInfo>;
