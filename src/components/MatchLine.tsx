@@ -1,5 +1,6 @@
 import React from 'react';
 import { MatchInfo, ParticipantInfo } from '../interfaces';
+import Button from '@material-ui/core/Button';
 
 const MatchLine = (props: {
   match: MatchInfo;
@@ -48,17 +49,19 @@ const MatchLine = (props: {
           <>
             completed: {new Date(completed_at).toLocaleTimeString()}{' '}
             {scores_csv ? `[${scores_csv}]` : ''}
-            <button>edit</button>
+            <Button variant="contained">edit</Button>
           </>
         ) : null}
 
         {state === 'open' ? (
           <>
-            <button>report</button>
+            <Button variant="outlined">report</Button>
+            <Button variant="text">report</Button>
+            <Button variant="contained">report</Button>
           </>
         ) : null}
       </div>
-      <pre>{JSON.stringify(match, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(match, null, 2)}</pre> */}
     </div>
   );
 };
