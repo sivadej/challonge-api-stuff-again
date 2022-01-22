@@ -10,11 +10,8 @@ export default function ActiveMatchesView(props: {
   const { tourneyPath } = props;
   const { domain, tourneyName } = tourneyPath;
 
-  const matchesRes = useMatchesQuery(tourneyPath);
-  const { data: matchesData } = matchesRes;
-
-  const playerQueryRes = usePlayersQuery(tourneyPath);
-  const { data: playersData } = playerQueryRes;
+  const { data: matchesData } = useMatchesQuery(tourneyPath);
+  const { data: playersData } = usePlayersQuery(tourneyPath);
 
   return (
     <>

@@ -7,7 +7,8 @@ const MatchLine = (props: {
   player2?: ParticipantInfo | null;
 }): JSX.Element => {
   const { match, player1, player2 } = props;
-  const { round, underway_at, started_at } = match;
+  const { round, underway_at, started_at, scores_csv, completed_at, state } =
+    match;
 
   const timeFormatted =
     underway_at || started_at
@@ -40,8 +41,23 @@ const MatchLine = (props: {
   return (
     <div>
       <h3>
-        Round {roundLabel}: {p1label} vs {p2label} @ {timeFormatted}
+        Round {roundLabel}: {p1label} vs {p2label} | started @ {timeFormatted}
       </h3>
+      <div>
+        {state === 'complete' && completed_at ? (
+          <>
+            completed: {new Date(completed_at).toLocaleTimeString()}{' '}
+            {scores_csv ? `[${scores_csv}]` : ''}
+            <button>edit</button>
+          </>
+        ) : null}
+
+        {state === 'open' ? (
+          <>
+            <button>report</button>
+          </>
+        ) : null}
+      </div>
       <pre>{JSON.stringify(match, null, 2)}</pre>
     </div>
   );

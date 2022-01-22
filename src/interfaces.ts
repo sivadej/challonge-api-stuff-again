@@ -14,6 +14,7 @@ export interface Match {
 export interface MatchInfo {
   attachment_count?: string | null;
   created_at: string;
+  completed_at?: string | null;
   group_id?: string | null;
   has_attachment: boolean;
   id: number;
