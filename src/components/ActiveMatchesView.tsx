@@ -9,18 +9,11 @@ interface Props {
 }
 
 export default function ActiveMatchesView({ settings }: Props): JSX.Element {
-  const { tourney } = settings || {};
-  const { domain, tourneyName } = tourney || {};
-
   const { data: matchesData } = useMatchesQuery(settings);
   const { data: playersData } = usePlayersQuery(settings);
 
   return (
     <>
-      <h1>
-        matches {domain} {tourneyName}
-      </h1>
-      {JSON.stringify(settings, null, 2)}
       {matchesData?.map((m) => {
         const p1data = m.match.player1_id
           ? playersData?.get(m.match.player1_id)

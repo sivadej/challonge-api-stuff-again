@@ -7,20 +7,19 @@ const getMatches = async (settings: ChallongerLocalStorage) => {
   const { domain, tourneyName } = tourney || {};
   const { challongeKey } = config || {};
   const url = `https://api.challonge.com/v1/tournaments/${domain}-${tourneyName}/matches.json?api_key=${challongeKey}`;
-  const { data } = await axios.get(url);
+  const { data } = await axios.get<Match[]>(url);
+  if (!data) return [];
   return data;
 };
 
-export default function useMatches(settings: ChallongerLocalStorage) {
+export default function useMatchesQuery(settings: ChallongerLocalStorage) {
   const { tourney } = settings || {};
   const { domain, tourneyName } = tourney || {};
   return useQuery<Match[]>(
-    `${domain}${tourneyName}matches`,
+    [`${domain}-${tourneyName}`, 'matches'],
     () => getMatches(settings),
     {
       refetchInterval: 20000,
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
     }
   );
 }

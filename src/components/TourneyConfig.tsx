@@ -1,6 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { ChallongerLocalStorage } from '../interfaces';
+import useTournamentQuery from '../hooks/useTournamentQuery';
 
 interface Props {
   settings: ChallongerLocalStorage;
@@ -8,23 +9,26 @@ interface Props {
 }
 
 export default function TourneyConfig({ settings, setSettings }: Props): JSX.Element {
-  const { config, tourney } = settings || {};
-  const { domain, tourneyName } = tourney || {};
-  const { challongeKey } = config || {};
+  const { config, tourney } = settings ?? {};
+  const { domain, tourneyName } = tourney ?? {};
+  const { challongeKey } = config ?? {};
 
-  const handleChangeKey = (e: React.FocusEvent<HTMLInputElement>) => {
+  const { data: tournamentData } = useTournamentQuery(settings);
+  const { name } = tournamentData ?? {};
+
+  const handleChangeKey = (e: React.FocusEvent<HTMLInputElement>): void => {
     if (challongeKey !== e.target.value) {
       setSettings({...settings, config: { challongeKey: e.target.value } })
     }
   };
 
-  const handleChangeName = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleChangeName = (e: React.FocusEvent<HTMLInputElement>): void => {
     if (tourneyName !== e.target.value) {
       setSettings({...settings, tourney: { ...settings.tourney, tourneyName: e.target.value} })
     }
   };
 
-  const handleChangeDomain = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleChangeDomain = (e: React.FocusEvent<HTMLInputElement>): void => {
     if (domain !== e.target.value) {
       setSettings({...settings, tourney: { ...settings.tourney, domain: e.target.value} })
     }
@@ -32,8 +36,7 @@ export default function TourneyConfig({ settings, setSettings }: Props): JSX.Ele
 
   return (
     <>
-      <h1>tourney config</h1>
-      {JSON.stringify(settings, null, 2)}
+      {name}
       <div style={{ display: 'flex', gap: '1rem' }}>
         <TextField
           label="Challonge API Key"
