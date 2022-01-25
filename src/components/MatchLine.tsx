@@ -1,14 +1,17 @@
 import React from 'react';
 import { MatchInfo, ParticipantInfo } from '../interfaces';
+import useUpdateMatchMutation from '../hooks/useUpdateMatchMutation';
 import Button from '@material-ui/core/Button';
+import { useQueryClient } from 'react-query';
 
 const MatchLine = (props: {
   match: MatchInfo;
   player1?: ParticipantInfo | null;
   player2?: ParticipantInfo | null;
 }): JSX.Element => {
+  const client = useQueryClient();
   const { match, player1, player2 } = props;
-  const { round, underway_at, started_at, scores_csv, completed_at, state } =
+  const { id: matchId, round, underway_at, started_at, scores_csv, completed_at, state } =
     match;
 
   const timeFormatted =
@@ -39,6 +42,16 @@ const MatchLine = (props: {
     </span>
   );
 
+  const { mutate: updateMatch } = useUpdateMatchMutation();
+  const handleClickWin = (playerId?: number | null) => {
+    if (!playerId) return;
+    updateMatch({matchId, playerId}, {
+      onSuccess: () => {
+        client.invalidateQueries(["akg-test1030","matches"]);
+      }
+    });
+  }
+
   return (
     <div>
       <h3>
@@ -49,15 +62,14 @@ const MatchLine = (props: {
           <>
             completed: {new Date(completed_at).toLocaleTimeString()}{' '}
             {scores_csv ? `[${scores_csv}]` : ''}
-            <Button variant="contained">edit</Button>
+            <Button variant="outlined">edit</Button>
           </>
         ) : null}
 
         {state === 'open' ? (
           <>
-            <Button variant="outlined">report</Button>
-            <Button variant="text">report</Button>
-            <Button variant="contained">report</Button>
+            <Button variant="contained" onClick={() => handleClickWin(player1?.id)}>P1 WIN</Button>
+            <Button variant="contained" onClick={() => handleClickWin(player2?.id)}>P2 WIN</Button>
           </>
         ) : null}
       </div>
