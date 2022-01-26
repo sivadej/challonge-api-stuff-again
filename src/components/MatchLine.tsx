@@ -1,5 +1,9 @@
 import React from 'react';
-import { MatchInfo, ParticipantInfo } from '../interfaces';
+import {
+  ChallongerLocalStorage,
+  MatchInfo,
+  ParticipantInfo,
+} from '../interfaces';
 import useUpdateMatchMutation from '../hooks/useUpdateMatchMutation';
 import Button from '@material-ui/core/Button';
 import { useQueryClient } from 'react-query';
@@ -8,11 +12,19 @@ const MatchLine = (props: {
   match: MatchInfo;
   player1?: ParticipantInfo | null;
   player2?: ParticipantInfo | null;
+  settings: ChallongerLocalStorage;
 }): JSX.Element => {
   const client = useQueryClient();
-  const { match, player1, player2 } = props;
-  const { id: matchId, round, underway_at, started_at, scores_csv, completed_at, state } =
-    match;
+  const { match, player1, player2, settings } = props;
+  const {
+    id: matchId,
+    round,
+    underway_at,
+    started_at,
+    scores_csv,
+    completed_at,
+    state,
+  } = match;
 
   const timeFormatted =
     underway_at || started_at
@@ -43,14 +55,20 @@ const MatchLine = (props: {
   );
 
   const { mutate: updateMatch } = useUpdateMatchMutation();
-  const handleClickWin = (playerId?: number | null) => {
+  const handleClickWin = (playerId?: number | null, score?: string) => {
     if (!playerId) return;
-    updateMatch({matchId, playerId}, {
-      onSuccess: () => {
-        client.invalidateQueries(["akg-test1030","matches"]);
+    updateMatch(
+      { matchId, playerId, settings, score },
+      {
+        onSuccess: () => {
+          client.invalidateQueries([
+            `${settings.tourney.domain}-${settings.tourney.tourneyName}`,
+            'matches',
+          ]);
+        },
       }
-    });
-  }
+    );
+  };
 
   return (
     <div>
@@ -62,14 +80,48 @@ const MatchLine = (props: {
           <>
             completed: {new Date(completed_at).toLocaleTimeString()}{' '}
             {scores_csv ? `[${scores_csv}]` : ''}
-            <Button variant="outlined">edit</Button>
+            <Button variant='outlined'>edit</Button>
           </>
         ) : null}
 
         {state === 'open' ? (
           <>
-            <Button variant="contained" onClick={() => handleClickWin(player1?.id)}>P1 WIN</Button>
-            <Button variant="contained" onClick={() => handleClickWin(player2?.id)}>P2 WIN</Button>
+            <Button
+              variant='contained'
+              onClick={() => handleClickWin(player1?.id)}
+            >
+              P1 WIN
+            </Button>
+            <Button
+              variant='outlined'
+              onClick={() => handleClickWin(player1?.id, '2-0')}
+            >
+              P1 WIN 2-0
+            </Button>
+            <Button
+              variant='outlined'
+              onClick={() => handleClickWin(player1?.id, '2-1')}
+            >
+              P1 WIN 2-1
+            </Button>
+            <Button
+              variant='contained'
+              onClick={() => handleClickWin(player2?.id)}
+            >
+              P2 WIN
+            </Button>
+            <Button
+              variant='outlined'
+              onClick={() => handleClickWin(player2?.id, '2-0')}
+            >
+              P2 WIN 2-0
+            </Button>
+            <Button
+              variant='outlined'
+              onClick={() => handleClickWin(player2?.id, '2-1')}
+            >
+              P2 WIN 2-1
+            </Button>
           </>
         ) : null}
       </div>

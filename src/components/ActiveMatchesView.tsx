@@ -27,6 +27,7 @@ export default function ActiveMatchesView({ settings }: Props): JSX.Element {
             match={m.match}
             player1={p1data}
             player2={p2data}
+            settings={settings}
           />
         );
       })}

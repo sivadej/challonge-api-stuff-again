@@ -83,6 +83,12 @@ export interface ParticipantInfo {
 
 export type PlayerMap = Map<number, ParticipantInfo>;
 
+export type TournamentMap = Map<number, TournamentInfo>;
+export type TournamentEntities = {
+  ids: number[];
+  entities: { [key: number]: TournamentInfo }
+}
+
 export interface Tournament {
   tournament: TournamentInfo;
 }

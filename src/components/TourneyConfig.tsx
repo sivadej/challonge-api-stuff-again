@@ -43,7 +43,7 @@ export default function TourneyConfig({ settings, setSettings }: Props): JSX.Ele
           type="password"
           variant="outlined"
           size="small"
-          defaultValue={challongeKey ?? ''}
+          value={challongeKey}
           inputProps={{
             onBlur: handleChangeKey,
           }}
@@ -52,7 +52,7 @@ export default function TourneyConfig({ settings, setSettings }: Props): JSX.Ele
           label="Domain"
           variant="outlined"
           size="small"
-          defaultValue={domain}
+          value={domain}
           inputProps={{
             onBlur: handleChangeDomain,
           }}
@@ -61,7 +61,7 @@ export default function TourneyConfig({ settings, setSettings }: Props): JSX.Ele
           label="Tourney Name"
           variant="outlined"
           size="small"
-          defaultValue={tourneyName}
+          value={tourneyName}
           inputProps={{
             onBlur: handleChangeName,
           }}
