@@ -16,7 +16,7 @@ export default function TournamentSelector({
   settings,
   setSettings,
 }: Props): JSX.Element {
-  const [selected, setSelected] = useState<string>(settings.tourney.tourneyName);
+  const [selected, setSelected] = useState<string>(settings?.tourney?.tourneyName ?? '');
   const { data: tournaments } = useTournamentListQuery(settings);
 
   const tournamentMenuItems: React.ReactNode[] = [];

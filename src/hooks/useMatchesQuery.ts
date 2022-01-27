@@ -1,15 +1,21 @@
 import { useQuery } from 'react-query';
+import { API_BASE_URL } from '../config';
 import axios from 'axios';
 import { Match, ChallongerLocalStorage } from '../interfaces';
 
 const getMatches = async (settings: ChallongerLocalStorage) => {
-  const { config, tourney } = settings || {};
-  const { domain, tourneyName } = tourney || {};
-  const { challongeKey } = config || {};
-  const url = `https://api.challonge.com/v1/tournaments/${domain}-${tourneyName}/matches.json?api_key=${challongeKey}`;
-  const { data } = await axios.get<Match[]>(url);
-  if (!data) return [];
-  return data;
+  const {
+    config: { challongeKey },
+    tourney: { domain, tourneyName },
+  } = settings;
+  const url = `${API_BASE_URL}/matches`;
+  const params = {
+    subdomain: domain,
+    name: tourneyName,
+    api_key: challongeKey,
+  };
+  const { data } = await axios.get<Match[] | null>(url, { params });
+  return data ?? [];
 };
 
 export default function useMatchesQuery(settings: ChallongerLocalStorage) {

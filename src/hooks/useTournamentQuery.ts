@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query';
+import { API_BASE_URL } from '../config';
 import axios from 'axios';
 import {
   ChallongerLocalStorage,
@@ -9,19 +10,25 @@ import {
 const getTournament = async (
   settings: ChallongerLocalStorage
 ): Promise<TournamentInfo | null> => {
-  const { config, tourney } = settings || {};
-  const { domain, tourneyName } = tourney || {};
-  const { challongeKey } = config || {};
-  const url = `https://api.challonge.com/v1/tournaments/${domain}-${tourneyName}.json?api_key=${challongeKey}`;
-  const { data } = await axios.get<Tournament>(url);
-  const { tournament } = data || {};
+  const {
+    config: { challongeKey },
+    tourney: { domain, tourneyName },
+  } = settings;
+  const url = `${API_BASE_URL}/tournament`;
+  const params = {
+    subdomain: domain,
+    name: tourneyName,
+    api_key: challongeKey,
+  };
+  const { data } = await axios.get<Tournament | null>(url, { params });
+  const { tournament } = data ?? {};
   if (!tournament) return null;
   return tournament;
 };
 
 export default function useTournamentQuery(settings: ChallongerLocalStorage) {
-  const { tourney } = settings || {};
-  const { domain, tourneyName } = tourney || {};
+  const { tourney } = settings ?? {};
+  const { domain, tourneyName } = tourney ?? {};
   return useQuery<TournamentInfo | null>(
     [`${domain}-${tourneyName}`, 'tournament'],
     () => getTournament(settings),

@@ -1,12 +1,13 @@
 import React from 'react';
+import { useQueryClient } from 'react-query';
+import Button from '@material-ui/core/Button'
+import useUpdateMatchMutation from '../hooks/useUpdateMatchMutation';
+import useReopenMatchMutation from '../hooks/useReopenMatchMutation';
 import {
   ChallongerLocalStorage,
   MatchInfo,
   ParticipantInfo,
 } from '../interfaces';
-import useUpdateMatchMutation from '../hooks/useUpdateMatchMutation';
-import Button from '@material-ui/core/Button';
-import { useQueryClient } from 'react-query';
 
 const MatchLine = (props: {
   match: MatchInfo;
@@ -70,6 +71,21 @@ const MatchLine = (props: {
     );
   };
 
+  const { mutate: reopenMatch } = useReopenMatchMutation();
+  const handleClickReopen = () => {
+    reopenMatch(
+      { matchId, settings },
+      {
+        onSuccess: () => {
+          client.invalidateQueries([
+            `${settings.tourney.domain}-${settings.tourney.tourneyName}`,
+            'matches',
+          ]);
+        },
+      }
+    );
+  };
+
   return (
     <div>
       <h3>
@@ -80,7 +96,9 @@ const MatchLine = (props: {
           <>
             completed: {new Date(completed_at).toLocaleTimeString()}{' '}
             {scores_csv ? `[${scores_csv}]` : ''}
-            <Button variant='outlined'>edit</Button>
+            <Button variant='outlined' onClick={handleClickReopen}>
+              Reopen
+            </Button>
           </>
         ) : null}
 
@@ -125,7 +143,6 @@ const MatchLine = (props: {
           </>
         ) : null}
       </div>
-      {/* <pre>{JSON.stringify(match, null, 2)}</pre> */}
     </div>
   );
 };

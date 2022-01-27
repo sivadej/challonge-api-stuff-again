@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import {
@@ -28,10 +29,11 @@ const getTournamentList = async (
     config: { challongeKey },
     tourney: { domain },
   } = settings;
-  const url = `https://api.challonge.com/v1/tournaments.json?api_key=${challongeKey}`;
+  const url = `${API_BASE_URL}/tournaments`;
   const params = {
     subdomain: domain,
     created_after: '2022-01-01',
+    api_key: challongeKey,
   };
   const { data } = await axios.get<Tournament[] | null>(url, { params });
   return buildEntities(data);

@@ -1,4 +1,5 @@
 import { useQuery, UseQueryResult } from 'react-query';
+import { API_BASE_URL } from '../config';
 import axios from 'axios';
 import { Participant, PlayerMap, ChallongerLocalStorage, ParticipantInfo } from '../interfaces';
 
@@ -13,14 +14,18 @@ const transformToPlayerMap = (data: Participant[]): PlayerMap => {
 };
 
 const getPlayers = async (settings: ChallongerLocalStorage) => {
-  const { config, tourney } = settings ?? {};
-  const { domain, tourneyName } = tourney ?? {};
-  const { challongeKey } = config ?? {};
-  const url =
-    `https://api.challonge.com/v1/tournaments/${domain}-${tourneyName}/` +
-    `participants.json?api_key=${challongeKey}`;
-  const { data } = await axios.get<Participant[]>(url);
-  return transformToPlayerMap(data);
+  const {
+    config: { challongeKey },
+    tourney: { domain, tourneyName },
+  } = settings;
+  const url = `${API_BASE_URL}/players`;
+  const params = {
+    subdomain: domain,
+    name: tourneyName,
+    api_key: challongeKey,
+  };
+  const { data } = await axios.get<Participant[] | null>(url, { params });
+  return transformToPlayerMap(data ?? []);
 };
 
 export default function usePlayersQuery(
