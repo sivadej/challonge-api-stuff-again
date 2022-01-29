@@ -2,7 +2,7 @@ export type ChallongerLocalStorage = {
   tourney: TourneyPath;
   config: Config;
   INIT?: boolean;
-}
+};
 
 export interface Config {
   challongeKey: string | null;
@@ -87,8 +87,8 @@ export type PlayerMap = Map<number, ParticipantInfo>;
 export type TournamentMap = Map<number, TournamentInfo>;
 export type TournamentEntities = {
   ids: number[];
-  entities: { [key: number]: TournamentInfo }
-}
+  entities: { [key: number]: TournamentInfo };
+};
 
 export interface Tournament {
   tournament: TournamentInfo;
@@ -141,7 +141,7 @@ export interface TournamentInfo {
   state: string;
   swiss_rounds: number;
   teams: boolean;
-  tie_breaks?: (string)[] | null;
+  tie_breaks?: string[] | null;
   tournament_type: string;
   updated_at: string;
   url: string;
@@ -158,3 +158,36 @@ export interface TournamentInfo {
   team_convertable: boolean;
   group_stages_were_started: boolean;
 }
+
+export interface StationState {
+  stations: Station[];
+}
+
+export interface Station {
+  id: string;
+  currentMatch: number | null;
+  queue: number[];
+}
+
+export type AppReducerActions =
+  | 'INIT_SETTINGS'
+  | 'SELECT_TOURNAMENT'
+  | 'CHANGE_TOURNEY_NAME'
+  | 'CHANGE_DOMAIN'
+  | 'CHANGE_API_KEY';
+
+export enum StationActionTypes {
+  addStation = 'ADD_STATION',
+  removeStation = 'REMOVE_STATION',
+  assignMatchToStation = 'ASSIGN_MATCH_TO_STATION',
+  fillAvailableStations = 'FILL_AVAILABLE_STATIONS',
+}
+
+export type StationReducerActions =
+  | { type: StationActionTypes.addStation; payload: { stationName: string } }
+  | { type: StationActionTypes.removeStation; payload: { stationName: string } }
+  | { type: StationActionTypes.fillAvailableStations }
+  | {
+      type: StationActionTypes.assignMatchToStation;
+      payload: { stationName: string; matchId: number };
+    };

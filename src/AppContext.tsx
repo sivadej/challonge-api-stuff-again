@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useReducer } from 'react';
-import { ChallongerLocalStorage } from './interfaces';
+import { AppReducerActions, ChallongerLocalStorage } from './interfaces';
 
 const initialState: ChallongerLocalStorage = {
   tourney: {
@@ -22,11 +22,11 @@ const AppContext = createContext<{
 
 const reducer = (
   state: ChallongerLocalStorage,
-  action: { type: unknown; payload?: any },
+  action: { type: AppReducerActions; payload?: any },
 ): ChallongerLocalStorage => {
   const newState: ChallongerLocalStorage = { ...state };
   switch(action.type) {
-  
+
     case 'INIT_SETTINGS':
       console.log('INIT_SETTINGS', JSON.stringify(action.payload, null, 2));
       newState.INIT = true;

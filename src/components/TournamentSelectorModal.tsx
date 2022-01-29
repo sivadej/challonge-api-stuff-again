@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import { AppContext } from '../AppContext';
 import TournamentSelector from './TournamentSelector';
-import TournamentConfig from './TournamentConfig';
 
 const style = {
   position: 'absolute',
@@ -31,7 +30,14 @@ export default function TournamentSelectorModal(): JSX.Element {
 
   return (
     <div>
-      <Button onClick={handleOpen} disabled={!challongeKey || !domain}>My Tournaments</Button>
+      <Button
+        onClick={handleOpen}
+        color='primary'
+        variant='contained'
+        disabled={!challongeKey || !domain}
+      >
+        My Tournaments
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -39,8 +45,18 @@ export default function TournamentSelectorModal(): JSX.Element {
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
-          <div style={{ fontWeight: 'bold', marginBottom: '1rem', fontSize: '1.5rem' }}>Select Tournament</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <div
+            style={{
+              fontWeight: 'bold',
+              marginBottom: '1rem',
+              fontSize: '1.5rem',
+            }}
+          >
+            Select Tournament
+          </div>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
+          >
             <TournamentSelector />
           </div>
         </Box>

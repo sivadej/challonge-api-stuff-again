@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import { AppContext } from '../AppContext';
 import TournamentSelector from './TournamentSelector';
-import TournamentConfig from './TournamentConfig';
+import TournamentConfig from './Settings';
 
 const style = {
   position: 'absolute',
@@ -27,7 +27,7 @@ export default function SettingsModal(): JSX.Element {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Settings</Button>
+      <Button onClick={handleOpen} color='secondary' variant='contained'>Settings</Button>
       <Modal
         open={open}
         onClose={handleClose}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQueryClient } from 'react-query';
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
 import useUpdateMatchMutation from '../hooks/useUpdateMatchMutation';
 import useReopenMatchMutation from '../hooks/useReopenMatchMutation';
 import {
@@ -20,17 +20,17 @@ const MatchLine = (props: {
   const {
     id: matchId,
     round,
-    underway_at,
-    started_at,
+    // underway_at,
+    // started_at,
     scores_csv,
     completed_at,
     state,
   } = match;
 
-  const timeFormatted =
-    underway_at || started_at
-      ? new Date(underway_at ?? started_at ?? '').toLocaleTimeString()
-      : '--/--/-- --:--:--';
+  // const timeFormatted =
+  //   underway_at || started_at
+  //     ? new Date(underway_at ?? started_at ?? '').toLocaleTimeString()
+  //     : '--/--/-- --:--:--';
   const p1name = player1?.name ?? '--';
   const p2name = player2?.name ?? '--';
 
@@ -88,8 +88,9 @@ const MatchLine = (props: {
 
   return (
     <div>
+      <pre>{JSON.stringify(match)}</pre>
       <h3>
-        Round {roundLabel}: {p1label} vs {p2label} | started @ {timeFormatted}
+        Round {roundLabel}: {p1label} vs {p2label}
       </h3>
       <div>
         {state === 'complete' && completed_at ? (
@@ -130,18 +131,31 @@ const MatchLine = (props: {
             </Button>
             <Button
               variant='outlined'
-              onClick={() => handleClickWin(player2?.id, '2-0')}
+              onClick={() => handleClickWin(player2?.id, '0-2')}
             >
               P2 WIN 2-0
             </Button>
             <Button
               variant='outlined'
-              onClick={() => handleClickWin(player2?.id, '2-1')}
+              onClick={() => handleClickWin(player2?.id, '1-2')}
             >
               P2 WIN 2-1
             </Button>
           </>
         ) : null}
+
+        <Button
+          variant='outlined'
+          onClick={() => {}}
+        >
+          AUTO ASSIGN
+        </Button>
+        <Button
+          variant='outlined'
+          onClick={() => {}}
+        >
+          PICK A STATION
+        </Button>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import useTournamentQuery from '../hooks/useTournamentQuery';
 import { AppContext } from '../AppContext';
 
-export default function TournamentConfig(): JSX.Element {
+export default function Settings(): JSX.Element {
   const { state: settings, dispatch } = useContext(AppContext);
   const {
     config: { challongeKey },

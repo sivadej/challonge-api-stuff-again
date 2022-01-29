@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import Box from '@material-ui/core/Box';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -44,6 +45,11 @@ export default function TournamentSelector(): JSX.Element {
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
         <InputLabel id='tournament-select-label'>Tournament Name</InputLabel>
+        {isLoading ? (
+          <div style={{ textAlign: 'center' }}>
+            <CircularProgress />
+          </div>
+        ) : null}
         <Select
           labelId='tournament-select-label'
           id='tournament-select'
