@@ -1,6 +1,7 @@
 export type ChallongerLocalStorage = {
   tourney: TourneyPath;
   config: Config;
+  INIT?: boolean;
 }
 
 export interface Config {

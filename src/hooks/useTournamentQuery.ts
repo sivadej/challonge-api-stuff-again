@@ -20,15 +20,17 @@ const getTournament = async (
     name: tourneyName,
     api_key: challongeKey,
   };
+  if (!domain || !tourneyName || !challongeKey) {
+    return null;
+  }
   const { data } = await axios.get<Tournament | null>(url, { params });
   const { tournament } = data ?? {};
-  if (!tournament) return null;
-  return tournament;
+  return tournament ?? null;
 };
 
 export default function useTournamentQuery(settings: ChallongerLocalStorage) {
-  const { tourney } = settings ?? {};
-  const { domain, tourneyName } = tourney ?? {};
+  const { tourney } = settings;
+  const { domain, tourneyName } = tourney;
   return useQuery<TournamentInfo | null>(
     [`${domain}-${tourneyName}`, 'tournament'],
     () => getTournament(settings),

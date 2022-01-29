@@ -1,14 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import useMatchesQuery from '../hooks/useMatchesQuery';
 import usePlayersQuery from '../hooks/usePlayersQuery';
-import { ChallongerLocalStorage } from '../interfaces';
 import MatchLine from './MatchLine';
+import { AppContext } from '../AppContext';
 
-interface Props {
-  settings: ChallongerLocalStorage;
-}
-
-export default function ActiveMatchesView({ settings }: Props): JSX.Element {
+export default function ActiveMatchesView(): JSX.Element {
+  const { state: settings } = useContext(AppContext);
   const { data: matchesData } = useMatchesQuery(settings);
   const { data: playersData } = usePlayersQuery(settings);
 

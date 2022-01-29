@@ -24,6 +24,7 @@ const getPlayers = async (settings: ChallongerLocalStorage) => {
     name: tourneyName,
     api_key: challongeKey,
   };
+  if (!domain || !tourneyName || !challongeKey) return transformToPlayerMap([]);
   const { data } = await axios.get<Participant[] | null>(url, { params });
   return transformToPlayerMap(data ?? []);
 };

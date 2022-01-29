@@ -14,6 +14,7 @@ const getMatches = async (settings: ChallongerLocalStorage) => {
     name: tourneyName,
     api_key: challongeKey,
   };
+  if (!domain || !tourneyName || !challongeKey) return [];
   const { data } = await axios.get<Match[] | null>(url, { params });
   return data ?? [];
 };

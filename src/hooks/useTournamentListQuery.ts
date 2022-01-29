@@ -35,6 +35,9 @@ const getTournamentList = async (
     created_after: '2022-01-01',
     api_key: challongeKey,
   };
+  if (!challongeKey || !domain) {
+    return buildEntities(null);
+  }
   const { data } = await axios.get<Tournament[] | null>(url, { params });
   return buildEntities(data);
 };
@@ -43,7 +46,7 @@ export default function useTournamentListQuery(
   settings: ChallongerLocalStorage
 ) {
   return useQuery<TournamentEntities>(
-    ['tournamentList'],
+    ['tournamentList', settings.tourney.domain],
     () => getTournamentList(settings),
     {
       staleTime: Infinity,

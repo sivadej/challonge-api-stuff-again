@@ -1,23 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@material-ui/core/Box';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import { AppContext } from '../AppContext';
 import useTournamentListQuery from '../hooks/useTournamentListQuery';
-import { ChallongerLocalStorage } from '../interfaces';
 
-interface Props {
-  settings: ChallongerLocalStorage;
-  setSettings: (v: ChallongerLocalStorage) => void;
-}
-
-export default function TournamentSelector({
-  settings,
-  setSettings,
-}: Props): JSX.Element {
-  const [selected, setSelected] = useState<string>(settings?.tourney?.tourneyName ?? '');
-  const { data: tournaments } = useTournamentListQuery(settings);
+export default function TournamentSelector(): JSX.Element {
+  const { state, dispatch } = useContext(AppContext);
+  const {
+    tourney: { tourneyName },
+  } = state;
+  const [selected, setSelected] = useState<string>(tourneyName);
+  const { data: tournaments, isLoading } = useTournamentListQuery(state);
 
   const tournamentMenuItems: React.ReactNode[] = [];
   if (tournaments && tournaments.ids.length) {
@@ -37,31 +33,28 @@ export default function TournamentSelector({
   ) => {
     if (typeof e.target.value === 'string') {
       setSelected(e.target.value);
-      setSettings({
-        ...settings,
-        tourney: { ...settings.tourney, tourneyName: e.target.value },
+      dispatch({
+        type: 'CHANGE_TOURNEY_NAME',
+        payload: { tourneyName: e.target.value },
       });
     }
   };
 
   return (
-    <>
-      <h3>tournmament list</h3>
-      {selected}
-      <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
-          <InputLabel id='tournament-select-label'>Tournament</InputLabel>
-          <Select
-            labelId='tournament-select-label'
-            id='tournament-select'
-            value={selected}
-            label='Tournament'
-            onChange={handleChange}
-          >
-            {tournamentMenuItems}
-          </Select>
-        </FormControl>
-      </Box>
-    </>
+    <Box sx={{ minWidth: 120 }}>
+      <FormControl fullWidth>
+        <InputLabel id='tournament-select-label'>Tournament Name</InputLabel>
+        <Select
+          labelId='tournament-select-label'
+          id='tournament-select'
+          value={selected}
+          label='Tournament'
+          onChange={handleChange}
+          disabled={isLoading}
+        >
+          {tournamentMenuItems}
+        </Select>
+      </FormControl>
+    </Box>
   );
 }

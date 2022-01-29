@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import useTournamentQuery from '../hooks/useTournamentQuery';
-import { ChallongerLocalStorage } from '../interfaces';
+import { AppContext } from '../AppContext';
 
-interface Props {
-  settings: ChallongerLocalStorage;
-}
 
-export default function Header({ settings }: Props): JSX.Element {
-  const { data: tournamentData } = useTournamentQuery(settings);
+export default function Header(): JSX.Element {
+  const { state } = useContext(AppContext);
+  const { data: tournamentData } = useTournamentQuery(state);
   const { name, tournament_type } = tournamentData ?? {};
 
   const tName = name ? name.toUpperCase() : '--';
@@ -15,6 +13,7 @@ export default function Header({ settings }: Props): JSX.Element {
 
   return (
     <>
+      {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
       <h3>{tName}</h3>
       <small>{tType}</small>
     </>
