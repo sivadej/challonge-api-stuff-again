@@ -6,7 +6,7 @@ import { StationProvider } from './StationContext';
 import ActiveMatchesView from './components/ActiveMatchesView';
 import Header from './components/Header';
 import SettingsModal from './components/SettingsModal';
-import StationManager from './components/StationManager';
+// import StationManager from './components/StationManager';
 import TournamentSelectorModal from './components/TournamentSelectorModal';
 
 import client from './client';
