@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
-import { AppContext } from '../AppContext';
-import TournamentSelector from './TournamentSelector';
+// import { AppContext } from '../AppContext';
+// import TournamentSelector from './TournamentSelector';
 import TournamentConfig from './Settings';
 
 const style = {
@@ -19,7 +19,7 @@ const style = {
 };
 
 export default function SettingsModal(): JSX.Element {
-  const { state, dispatch } = useContext(AppContext);
+//  const { state, dispatch } = useContext(AppContext);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

@@ -28,7 +28,7 @@ const reducer = (
   switch(action.type) {
 
     case 'INIT_SETTINGS':
-      console.log('INIT_SETTINGS', JSON.stringify(action.payload, null, 2));
+      console.log('INIT_SETTINGS');
       newState.INIT = true;
       newState.config = action.payload.config;
       newState.tourney = action.payload.tourney;
@@ -61,13 +61,11 @@ const reducer = (
       return newState;
     
     default:
-      console.log('default');
       return state;
   }
 }
 
 function setLocalStorage(state: ChallongerLocalStorage) {
-  console.log('setLocalStorage called');
   window.localStorage.setItem(
     'challongerSettings',
     JSON.stringify(state),
@@ -76,9 +74,7 @@ function setLocalStorage(state: ChallongerLocalStorage) {
 
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log('context state', JSON.stringify(state, null, 2));
   useEffect(() => {
-    console.log('useeffect');
     function initLocalStorage(state: ChallongerLocalStorage) {
       const savedState = window.localStorage.getItem('challongerSettings');
       dispatch({

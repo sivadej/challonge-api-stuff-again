@@ -16,7 +16,7 @@ export default function App(): JSX.Element {
     <QueryClientProvider client={client}>
       <AppProvider>
         <StationProvider>
-          <StationManager />
+          {/* <StationManager /> */}
           <TournamentSelectorModal />
           <SettingsModal />
           <Header />
